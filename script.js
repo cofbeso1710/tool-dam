@@ -62,6 +62,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const selectedPhase = gridConnection.value;
         batteryCapacity.innerHTML = '<option value="">-- Chọn dung lượng pin --</option>';
 
+        const zeroOption = document.createElement('option');
+        zeroOption.value = '0';
+        zeroOption.textContent = '0 kWh (Không lưu trữ)';
+        batteryCapacity.appendChild(zeroOption);
+
         if (selectedPhase && batteryOptions[selectedPhase]) {
             batteryOptions[selectedPhase].forEach(option => {
                 const optionElement = document.createElement('option');
@@ -123,19 +128,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let capitalCost, rate;
         if (type === 'residential') {
-            capitalCost = storage > 0
-                ? capacityOpt * 13356000 + (storage * 35200000) / 5
-                : capacityOpt * 10200000;
+            if (storage > 0) {
+                capitalCost = capacityOpt * 13356000 + (storage * 35200000) / 5;
+            } else {
+                capitalCost = capacityOpt * 10200000;
+            }
             rate = 3000;
         } else if (type === 'production') {
-            capitalCost = storage > 0
-                ? capacityOpt * 13600000 + (storage * 60200000) / 7.68
-                : capacityOpt * 7500000;
+            if (storage > 0) {
+                capitalCost = capacityOpt * 13600000 + (storage * 60200000) / 7.68;
+            } else {
+                capitalCost = capacityOpt * 7500000;
+            }
             rate = 2400;
         } else {
-            capitalCost = storage > 0
-                ? capacityOpt * 13600000 + (storage * 60200000) / 7.68
-                : capacityOpt * 7500000;
+            if (storage > 0) {
+                capitalCost = capacityOpt * 13600000 + (storage * 60200000) / 7.68;
+            } else {
+                capitalCost = capacityOpt * 7500000;
+            }
             rate = 4000;
         }
 
@@ -232,7 +243,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const billVnd = parseFloat(rawBill.replace(/,/g, ''));
+        const billVnd = parseFloat(rawBill.replace(/\./g, ''));
 
         const results = calculateSolarSystem({
             type,
@@ -318,6 +329,19 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         }
     });
+
+    const monthlyPaymentInput = document.getElementById('monthlyPayment');
+    if (monthlyPaymentInput) {
+        monthlyPaymentInput.addEventListener('input', function (e) {
+            let value = this.value.replace(/\D/g, '');
+            if (value) {
+                value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                this.value = value;
+            } else {
+                this.value = '';
+            }
+        });
+    }
 });
 
 function openQuoteForm() {
