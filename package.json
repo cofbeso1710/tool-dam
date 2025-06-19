@@ -1,0 +1,22 @@
+{
+  "name": "tool-dam",
+  "version": "1.0.0",
+  "description": "Solar Energy Calculator Tool",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx live-server --port=3000 --open=/index.html",
+    "dev": "npx live-server --port=3000 --open=/index.html",
+    "serve": "npx live-server --port=3000"
+  },
+  "keywords": [
+    "solar",
+    "energy",
+    "calculator",
+    "vietnam"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
