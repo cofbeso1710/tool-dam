@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     scenarioSelect.addEventListener('change', updatePhaseOptions);
     updatePhaseOptions();
 
-    function calculateSolarSystem({ type, billVnd, phase, dayRatio, storage, province }) {
+    function calculateSolarSystem({ type, billVnd, dayRatio, storage, province }) {
         const unVat = billVnd / 1.08;
 
         let monthlyKwh;
@@ -118,8 +118,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const dailyKwh = monthlyKwh / 30;
-        const dayCap = dailyKwh * dayRatio;
         const yieldVal = provinceYield[province] || 0;
+        const dayCap = dailyKwh * dayRatio / yieldVal;
         const nightCap = storage / yieldVal;
         const capacityOpt = dayCap + nightCap;
 
@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const htmlContent = `
             <div class="result-item">
                 <div class="result-label">Công suất hệ thống tối ưu</div>
-                <div class="result-value">${r.capacityOpt.toFixed(0)} kWp</div>
+                <div class="result-value">${r.capacityOpt.toFixed(1)} kWp</div>
             </div>
             ${r.storage > 0 ? `
             <div class="result-item">
@@ -183,15 +183,15 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>` : ''}
             <div class="result-item">
                 <div class="result-label">Sản lượng điện tạo ra trong 1 năm</div>
-                <div class="result-value">${r.annualProduction.toFixed(0)} kWh</div>
+                <div class="result-value">${r.annualProduction.toFixed(1)} kWh</div>
             </div>
             <div class="result-item">
                 <div class="result-label">Diện tích mái</div>
-                <div class="result-value">${r.roofArea.toFixed(0)} m²</div>
+                <div class="result-value">${r.roofArea.toFixed(1)} m²</div>
             </div>
             <div class="result-item">
                 <div class="result-label">Thời gian thu hồi vốn</div>
-                <div class="result-value">${r.payback.toFixed(0)} năm</div>
+                <div class="result-value">${r.payback.toFixed(1)} năm</div>
             </div>
             <button type="button" class="quote-button" onclick="openQuoteForm()">
                 Nhận báo giá chi tiết
