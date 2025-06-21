@@ -28,19 +28,19 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     const provinceYield = {
-        'An Giang': 4.1, 'Bà Rịa - Vũng Tàu': 4.3, 'Bạc Liêu': 3.9, 'Bắc Giang': 3.0, 'Bắc Kạn': 2.9,
-        'Bắc Ninh': 3.1, 'Bến Tre': 4.1, 'Bình Dương': 4.1, 'Bình Định': 4.0, 'Bình Phước': 4.0,
-        'Bình Thuận': 4.1, 'Cà Mau': 3.8, 'Cao Bằng': 2.9, 'Cần Thơ': 3.9, 'Đà Nẵng': 4.1,
+        'An Giang': 4.1, 'Bà Rịa - Vũng Tàu': 4.3, 'Bạc Liêu': 3.9, 'Bắc Giang': 3.5, 'Bắc Kạn': 3.5,
+        'Bắc Ninh': 3.5, 'Bến Tre': 4.1, 'Bình Dương': 4.1, 'Bình Định': 4.0, 'Bình Phước': 4.0,
+        'Bình Thuận': 4.1, 'Cà Mau': 4.0, 'Cao Bằng': 3.5, 'Cần Thơ': 3.9, 'Đà Nẵng': 4.1,
         'Đắk Lắk': 4.2, 'Đắk Nông': 4.1, 'Điện Biên': 3.5, 'Đồng Nai': 4.2, 'Đồng Tháp': 4.1,
-        'Gia Lai': 4.1, 'Hà Giang': 2.8, 'Hà Nam': 3.0, 'Hà Nội': 3.1, 'Hà Tĩnh': 3.1,
-        'Hải Dương': 3.0, 'Hải Phòng': 3.1, 'Hậu Giang': 3.9, 'Hòa Bình': 3.1, 'Hưng Yên': 3.0,
-        'Khánh Hòa': 4.3, 'Kiên Giang': 3.9, 'Kon Tum': 4.1, 'Lai Châu': 3.3, 'Lạng Sơn': 2.9,
-        'Lào Cai': 2.9, 'Lâm Đồng': 4.3, 'Long An': 4.0, 'Nam Định': 3.0, 'Nghệ An': 3.4,
-        'Ninh Bình': 3.2, 'Ninh Thuận': 4.5, 'Phú Thọ': 3.0, 'Phú Yên': 4.0, 'Quảng Bình': 3.1,
-        'Quảng Nam': 3.5, 'Quảng Ngãi': 3.7, 'Quảng Ninh': 2.9, 'Quảng Trị': 3.2, 'Sóc Trăng': 4.0,
-        'Sơn La': 3.3, 'Tây Ninh': 4.2, 'Thái Bình': 3.0, 'Thái Nguyên': 2.9, 'Thanh Hóa': 3.1,
-        'Thừa Thiên Huế': 3.4, 'Tiền Giang': 4.0, 'TP. Hồ Chí Minh': 4.0, 'Trà Vinh': 4.1,
-        'Tuyên Quang': 2.9, 'Vĩnh Long': 4.0, 'Vĩnh Phúc': 3.0, 'Yên Bái': 2.8
+        'Gia Lai': 4.1, 'Hà Giang': 3.5, 'Hà Nam': 3.5, 'Hà Nội': 3.5, 'Hà Tĩnh': 3.5,
+        'Hải Dương': 3.5, 'Hải Phòng': 3.5, 'Hậu Giang': 4.0, 'Hòa Bình': 3.5, 'Hưng Yên': 3.5,
+        'Khánh Hòa': 4.3, 'Kiên Giang': 4.0, 'Kon Tum': 4.1, 'Lai Châu': 3.5, 'Lạng Sơn': 3.5,
+        'Lào Cai': 3.5, 'Lâm Đồng': 4.3, 'Long An': 4.0, 'Nam Định': 3.5, 'Nghệ An': 3.5,
+        'Ninh Bình': 3.5, 'Ninh Thuận': 4.5, 'Phú Thọ': 3.5, 'Phú Yên': 4.0, 'Quảng Bình': 3.5,
+        'Quảng Nam': 3.5, 'Quảng Ngãi': 4.0, 'Quảng Ninh': 3.5, 'Quảng Trị': 3.5, 'Sóc Trăng': 4.0,
+        'Sơn La': 3.5, 'Tây Ninh': 4.2, 'Thái Bình': 3.5, 'Thái Nguyên': 3.5, 'Thanh Hóa': 3.5,
+        'Thừa Thiên Huế': 3.5, 'Tiền Giang': 4.0, 'TP. Hồ Chí Minh': 4.0, 'Trà Vinh': 4.1,
+        'Tuyên Quang': 3.5, 'Vĩnh Long': 4.0, 'Vĩnh Phúc': 3.5, 'Yên Bái': 3.5
     };
 
     const tiers = [
@@ -129,21 +129,21 @@ document.addEventListener('DOMContentLoaded', function () {
         let capitalCost, rate;
         if (type === 'residential') {
             if (storage > 0) {
-                capitalCost = capacityOpt * 13356000 + (storage * 35200000) / 5;
+                capitalCost = capacityOpt * 11200000 + (storage * 21500000) / 5;
             } else {
-                capitalCost = capacityOpt * 10200000;
+                capitalCost = capacityOpt * 8300000;
             }
             rate = 3000;
         } else if (type === 'production') {
             if (storage > 0) {
-                capitalCost = capacityOpt * 13600000 + (storage * 60200000) / 7.68;
+                capitalCost = capacityOpt * 12600000 + (storage * 40000000) / 7.5;
             } else {
                 capitalCost = capacityOpt * 7500000;
             }
             rate = 2400;
         } else {
             if (storage > 0) {
-                capitalCost = capacityOpt * 13600000 + (storage * 60200000) / 7.68;
+                capitalCost = capacityOpt * 13600000 + (storage * 40000000) / 7.5;
             } else {
                 capitalCost = capacityOpt * 7500000;
             }
@@ -183,11 +183,11 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>` : ''}
             <div class="result-item">
                 <div class="result-label">Sản lượng điện tạo ra trong 1 năm</div>
-                <div class="result-value">${r.annualProduction.toFixed(1)} kWh</div>
+                <div class="result-value">${r.annualProduction.toFixed(0)} kWh</div>
             </div>
             <div class="result-item">
                 <div class="result-label">Diện tích mái</div>
-                <div class="result-value">${r.roofArea.toFixed(1)} m²</div>
+                <div class="result-value">${r.roofArea.toFixed(0)} m²</div>
             </div>
             <div class="result-item">
                 <div class="result-label">Thời gian thu hồi vốn</div>
