@@ -275,30 +275,37 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const quoteForm = document.getElementById('quoteForm');
-    if (quoteForm) {
-        quoteForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+    const quoteButton = document.querySelector('.quote-button');
 
+    if (quoteForm && quoteButton) {
+        quoteButton.addEventListener('click', function (e) {
+            e.preventDefault();
             if (!validateForm()) {
                 return;
             }
-
-            const submitBtn = e.target.querySelector('.submit-btn');
-            const originalText = submitBtn.innerHTML;
-
-            submitBtn.innerHTML = '<span class="loading-spinner"></span>Đang gửi...';
-            submitBtn.disabled = true;
-
-            const customerName = document.getElementById('customerName').value;
-            const customerPhone = document.getElementById('customerPhone').value;
-
-            setTimeout(() => {
-                showSuccessMessage(customerName, customerPhone);
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            
+            const payload = new URLSearchParams();
+            payload.append('entry.540432097', name);
+            payload.append('entry.1201314922', phone);
+            fetch('https://docs.google.com/forms/d/e/1FAIpQLScKkbeq3v3paOWci7NRC5XnuurqdKtdidUJWq5WMkidfdzVEQ/formResponse', {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: payload.toString()
+            })
+            .then(() => {
+                showSuccessMessage(name, phone);
                 quoteForm.reset();
                 quotePopup.classList.remove('show');
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
+            })
+            .catch(err => {
+                alert('Có lỗi xảy ra, vui lòng thử lại!');
+                console.error(err);
+            });
         });
     }
 
@@ -342,6 +349,83 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    const provinces = [
+        "An Giang", "Bà Rịa - Vũng Tàu", "Bạc Liêu", "Bắc Giang", "Bắc Kạn", "Bắc Ninh", "Bến Tre", "Bình Dương", "Bình Định", "Bình Phước", "Bình Thuận", "Cà Mau", "Cao Bằng", "Cần Thơ", "Đà Nẵng", "Đắk Lắk", "Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam", "Hà Nội", "Hà Tĩnh", "Hải Dương", "Hải Phòng", "Hậu Giang", "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum", "Lai Châu", "Lạng Sơn", "Lào Cai", "Lâm Đồng", "Long An", "Nam Định", "Nghệ An", "Ninh Bình", "Ninh Thuận", "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh", "Quảng Trị", "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình", "Thái Nguyên", "Thanh Hóa", "Thừa Thiên Huế", "Tiền Giang", "TP. Hồ Chí Minh", "Trà Vinh", "Tuyên Quang", "Vĩnh Long", "Vĩnh Phúc", "Yên Bái"
+    ];
+
+    const provinceInput = document.getElementById('province');
+    const dropdown = document.getElementById('provinceDropdown');
+    let activeIndex = -1;
+
+    provinceInput.addEventListener('input', function() {
+        const value = this.value.trim().toLowerCase();
+        dropdown.innerHTML = '';
+        activeIndex = -1;
+        if (value === '') {
+            renderDropdown(provinces);
+        } else {
+            const filtered = provinces.filter(p => p.toLowerCase().includes(value));
+            renderDropdown(filtered);
+        }
+    });
+
+    provinceInput.addEventListener('focus', function() {
+        const value = this.value.trim().toLowerCase();
+        if (value === '') {
+            renderDropdown(provinces);
+        } else {
+            const filtered = provinces.filter(p => p.toLowerCase().includes(value));
+            renderDropdown(filtered);
+        }
+    });
+
+    provinceInput.addEventListener('blur', function() {
+        setTimeout(() => { dropdown.style.display = 'none'; }, 150);
+    });
+
+    dropdown.addEventListener('mousedown', function(e) {
+        if (e.target.tagName === 'LI') {
+            provinceInput.value = e.target.textContent;
+            dropdown.style.display = 'none';
+        }
+    });
+
+    provinceInput.addEventListener('keydown', function(e) {
+        const items = dropdown.querySelectorAll('li');
+        if (!items.length) return;
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            activeIndex = (activeIndex + 1) % items.length;
+            updateActive(items);
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            activeIndex = (activeIndex - 1 + items.length) % items.length;
+            updateActive(items);
+        } else if (e.key === 'Enter') {
+            if (activeIndex >= 0 && items[activeIndex]) {
+                provinceInput.value = items[activeIndex].textContent;
+                dropdown.style.display = 'none';
+            }
+        }
+    });
+
+    function renderDropdown(list) {
+        if (!list.length) {
+            dropdown.style.display = 'none';
+            return;
+        }
+        dropdown.innerHTML = list.map(p => `<li>${p}</li>`).join('');
+        dropdown.style.display = 'block';
+        activeIndex = -1;
+    }
+
+    function updateActive(items) {
+        items.forEach((item, idx) => {
+            item.classList.toggle('active', idx === activeIndex);
+            if (idx === activeIndex) item.scrollIntoView({ block: 'nearest' });
+        });
+    }
 });
 
 function openQuoteForm() {
@@ -360,8 +444,8 @@ function showSuccessMessage(name, phone) {
         <div class="success-content">
             <div class="success-icon">✓</div>
             <h3>Gửi yêu cầu thành công!</h3>
-            <p>Cảm ơn <strong>${name}</strong>,<br>
-            Chúng tôi sẽ liên hệ với bạn qua số <strong>${phone}</strong> trong vòng 24h.</p>
+            <p>Cảm ơn thông tin của quý khách<br>
+            Chúng tôi sẽ liên hệ tư vấn trong thời gian sớm nhất!</p>
             <button onclick="closeSuccessNotification()" class="success-btn">Đóng</button>
         </div>
     `;
