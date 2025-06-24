@@ -773,3 +773,25 @@ input::placeholder {
 .form-group.half-width {
     position: relative;
 }
+
+/* Bọc input và icon kính lúp */
+.input-icon-wrapper {
+    position: relative;
+    width: 100%;
+}
+.input-icon-wrapper input[type="text"] {
+    padding-right: 36px;
+}
+.input-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    color: #888;
+}
+.input-icon svg {
+    display: block;
+}
