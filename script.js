@@ -359,23 +359,47 @@ document.addEventListener('DOMContentLoaded', function () {
     let activeIndex = -1;
 
     provinceInput.addEventListener('input', function() {
-        const value = this.value.trim().toLowerCase();
+        const rawValue = this.value.trim().toLowerCase();
+        const valueNoSign = rawValue.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        let filtered = provinces.filter(p =>
+            p.toLowerCase().split(' ').some(word => word.startsWith(rawValue))
+        );
+
+        const filteredNoSign = provinces.filter(p =>
+            p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ')
+             .some(word => word.startsWith(valueNoSign))
+        );
+
+        filtered = [...new Set([...filtered, ...filteredNoSign])];
+
         dropdown.innerHTML = '';
         activeIndex = -1;
-        if (value === '') {
+        if (rawValue === '') {
             renderDropdown(provinces);
         } else {
-            const filtered = provinces.filter(p => p.toLowerCase().includes(value));
             renderDropdown(filtered);
         }
     });
 
     provinceInput.addEventListener('focus', function() {
-        const value = this.value.trim().toLowerCase();
-        if (value === '') {
+        const rawValue = this.value.trim().toLowerCase();
+        const valueNoSign = rawValue.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+        let filtered = provinces.filter(p =>
+            p.toLowerCase().split(' ').some(word => word.startsWith(rawValue))
+        );
+
+        const filteredNoSign = provinces.filter(p =>
+            p.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').split(' ')
+             .some(word => word.startsWith(valueNoSign))
+        );
+
+        filtered = [...new Set([...filtered, ...filteredNoSign])];
+
+        if (rawValue === '') {
             renderDropdown(provinces);
         } else {
-            const filtered = provinces.filter(p => p.toLowerCase().includes(value));
             renderDropdown(filtered);
         }
     });

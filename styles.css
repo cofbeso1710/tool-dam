@@ -774,7 +774,6 @@ input::placeholder {
     position: relative;
 }
 
-/* Bọc input và icon kính lúp */
 .input-icon-wrapper {
     position: relative;
     width: 100%;
