@@ -445,7 +445,7 @@ function showSuccessMessage(name, phone) {
             <div class="success-icon">✓</div>
             <h3>Gửi yêu cầu thành công!</h3>
             <p>Cảm ơn thông tin của quý khách<br>
-            Chúng tôi sẽ liên hệ tư vấn trong thời gian sớm nhất!</p>
+            Chúng tôi sẽ liên hệ lại sớm nhất!</p>
             <button onclick="closeSuccessNotification()" class="success-btn">Đóng</button>
         </div>
     `;
