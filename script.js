@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateForm() {
         let isValid = true;
-        const requiredFields = ['customerPhone'];
+        const requiredFields = ['customerPhone', 'customerAddress'];
 
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
@@ -300,10 +300,12 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             const name = document.getElementById('customerName').value.trim();
             const phone = document.getElementById('customerPhone').value.trim();
+            const address = document.getElementById('customerAddress').value.trim();
 
             const payload = new URLSearchParams();
             payload.append('entry.540432097', name);
             payload.append('entry.1201314922', phone);
+            payload.append('entry.1624858431', address); // Thay entry.123456789 bằng entry id thực tế nếu gửi Google Form
             fetch('https://docs.google.com/forms/d/e/1FAIpQLScKkbeq3v3paOWci7NRC5XnuurqdKtdidUJWq5WMkidfdzVEQ/formResponse', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -324,7 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    ['customerPhone'].forEach(fieldId => {
+    ['customerPhone', 'customerAddress'].forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
             field.addEventListener('blur', function () {
