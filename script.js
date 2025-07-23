@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     scenarioSelect.addEventListener('change', updatePhaseOptions);
     updatePhaseOptions();
 
-    function calculateSolarSystem({ type, billVnd, dayRatio, storage, province }) {
+    function calculateSolarSystem({ type, billVnd, dayRatio, storage, province, phase }) {
         const unVat = billVnd / 1.08;
 
         let monthlyKwh;
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const payback = capitalCost / (annualProduction * rate);
 
-        return { monthlyKwh, capacityOpt, roofArea, annualProduction, capitalCost, payback, storage };
+        return { monthlyKwh, capacityOpt, roofArea, annualProduction, capitalCost, payback, storage, type, phase };
     }
 
     function computeTierKwh(amount, tiers) {
@@ -171,6 +171,17 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayResults(r) {
         const resultDiv = document.getElementById('resultDiv');
 
+        let saving = 0;
+        if (r.type === 'residential' && r.phase === false) {
+            saving = r.annualProduction * 3000 / 12;
+        } else if (r.type === 'residential' && r.phase === true) {
+            saving = r.annualProduction * 3000 / 12;
+        } else if (r.type === 'production') {
+            saving = r.annualProduction * 2400 / 12;
+        } else if (r.type === 'commercial') {
+            saving = r.annualProduction * 4000 / 12;
+        }
+
         const htmlContent = `
             <div class="result-item">
                 <div class="result-label">Công suất hệ thống tối ưu</div>
@@ -186,12 +197,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="result-value">${r.annualProduction.toFixed(0)} kWh</div>
             </div>
             <div class="result-item">
-                <div class="result-label">Diện tích mái</div>
+                <div class="result-label">Diện tích mái (tối thiểu)</div>
                 <div class="result-value">${r.roofArea.toFixed(0)} m²</div>
             </div>
             <div class="result-item">
                 <div class="result-label">Thời gian thu hồi vốn</div>
                 <div class="result-value">${r.payback.toFixed(1)} năm</div>
+            </div>
+            <div class="result-item">
+                <div class="result-label">Số tiền điện tiết kiệm trung bình/tháng:</div>
+                <div class="result-value">${saving.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/tháng</div>
             </div>
             <button type="button" class="quote-button" onclick="openQuoteForm()">
                 Nhận báo giá chi tiết
@@ -203,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function validateForm() {
         let isValid = true;
-        const requiredFields = ['customerName', 'customerPhone'];
+        const requiredFields = ['customerPhone'];
 
         requiredFields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
@@ -309,7 +324,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    ['customerName', 'customerPhone'].forEach(fieldId => {
+    ['customerPhone'].forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (field) {
             field.addEventListener('blur', function () {
