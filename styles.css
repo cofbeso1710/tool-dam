@@ -794,3 +794,12 @@ input::placeholder {
 .input-icon svg {
     display: block;
 }
+
+.logo-top-left {
+    position: fixed;
+    width: 240px;
+    height: auto;
+    z-index: 2000;
+    background: transparent;
+    pointer-events: none;
+}
